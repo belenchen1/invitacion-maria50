@@ -812,13 +812,15 @@
   function search(q) {
     if (!q || q.trim().length < 2) return [];
     const nq = normalize(q.trim());
-    const results = [];
+    const matches = [];
+    const companions = [];
     for (const group of GUEST_LIST) {
-      if (group.some(name => normalize(name).includes(nq))) {
-        results.push(...group);
-      }
+      const hits = group.filter(name => normalize(name).includes(nq));
+      if (!hits.length) continue;
+      matches.push(...hits);
+      companions.push(...group.filter(name => !normalize(name).includes(nq)));
     }
-    return results;
+    return [...matches, ...companions];
   }
 
   async function doConfirm(name, btn) {
