@@ -855,36 +855,30 @@
 
   function doConfirm(name, btn) {
     const card = btn.closest('.guest-card');
-    card.querySelectorAll('button').forEach(b => b.disabled = true);
-
     confirmed.add(name); declined.delete(name);
     localStorage.setItem('rsvp_confirmed', JSON.stringify([...confirmed]));
     localStorage.setItem('rsvp_declined',  JSON.stringify([...declined]));
     sendToSheet('confirm', name);
 
-    const confirmBtn = card.querySelector('.confirm-btn');
-    const declineBtn = card.querySelector('.decline-btn');
-    confirmBtn.textContent = '¡Confirmado! ✓';
-    confirmBtn.classList.add('is-confirmed');
-    declineBtn.classList.remove('is-declined');
-    card.classList.remove('is-declined');
+    card.querySelector('.confirm-btn').classList.add('is-confirmed');
+    card.querySelector('.confirm-btn').textContent = '¡Confirmado! ✓';
+    card.querySelector('.decline-btn').classList.remove('is-declined');
     card.classList.add('is-confirmed');
+    card.classList.remove('is-declined');
   }
 
   function doDecline(name, btn) {
     const card = btn.closest('.guest-card');
-    card.querySelectorAll('button').forEach(b => b.disabled = true);
-
     declined.add(name); confirmed.delete(name);
     localStorage.setItem('rsvp_declined',  JSON.stringify([...declined]));
     localStorage.setItem('rsvp_confirmed', JSON.stringify([...confirmed]));
     sendToSheet('decline', name);
 
-    const confirmBtn = card.querySelector('.confirm-btn');
-    confirmBtn.classList.remove('is-confirmed');
-    btn.classList.add('is-declined');
-    card.classList.remove('is-confirmed');
+    card.querySelector('.confirm-btn').classList.remove('is-confirmed');
+    card.querySelector('.confirm-btn').textContent = 'Confirmar';
+    card.querySelector('.decline-btn').classList.add('is-declined');
     card.classList.add('is-declined');
+    card.classList.remove('is-confirmed');
   }
 
   function render(names) {
@@ -906,9 +900,9 @@
         <div class="guest-card${ok ? ' is-confirmed' : no ? ' is-declined' : ''}" role="listitem">
           <span class="guest-name">${name}</span>
           <div class="card-actions">
-            <button class="confirm-btn${ok ? ' is-confirmed' : ''}" ${done ? 'disabled' : ''}
+            <button class="confirm-btn${ok ? ' is-confirmed' : ''}"
               onclick="doConfirm('${s}', this)">${ok ? '¡Confirmado! ✓' : 'Confirmar'}</button>
-            <button class="decline-btn${no ? ' is-declined' : ''}" ${done ? 'disabled' : ''}
+            <button class="decline-btn${no ? ' is-declined' : ''}"
               onclick="doDecline('${s}', this)" aria-label="No puedo ir">✕</button>
           </div>
         </div>`;
