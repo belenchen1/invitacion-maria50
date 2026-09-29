@@ -731,38 +731,66 @@
   // ── CONFIG ──────────────────────────────────────────────
   // Después de configurar el Google Apps Script, pegar la URL aquí.
   // Ver instrucciones en google-apps-script/Code.gs
-  const APPS_SCRIPT_URL = 'REPLACE_WITH_YOUR_APPS_SCRIPT_URL';
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyHsviuksNsort-uyyZk2Z-yjcYdQvB5OibkOcEDxvA8WYLVJCesHCZgK6D0z5KeKrz8g/exec';
 
   // Hora del evento en Buenos Aires (UTC-3)
   const EVENT_DATE = new Date('2027-01-30T21:00:00-03:00');
 
   // ── LISTA DE INVITADOS ───────────────────────────────────
+  // Cada sub-array es un grupo: si la búsqueda coincide con cualquier
+  // miembro del grupo, se muestran TODOS los del grupo juntos.
+  // Podés reorganizar, agregar o quitar grupos libremente.
   const GUEST_LIST = [
-    "Emilia Fernandez","Santiago Chen","Kunxin Chen","Belén Chen",
-    "Cintia Guiñazú","Juan Pablo Collazo","Mateo Collazo","Morena Collazo",
-    "Titi Ortiz","Martin Fernandez","Martina Fernandez","Salvador Fernandez",
-    "Antonella Ercolano","José Luis Ercolano","Maria Ercolano","Matias Ercolano",
-    "Matias Ercolano (+1)","Sergio Ramos","Agustina Ramos","Claudia Caputto",
-    "Agustina Bandoni","Agustina Bandoni (+1)","Sofía Salvia","Hector Martinez",
-    "Laura Alfonsin","Roberto Desanso","Carmen Carbone","José Fragueiro",
-    "José Fragueiro (+1)","Carlos Silveira","Lorena Silveira","Carlos Scasso",
-    "Nelba Lucero","Victoria Scasso","Eugenia Scasso","Victoria Scasso (+1)",
-    "Eugenia Scasso (+1)","Mario Paoletta","Patricia","Julio",
-    "Marcela Delvecchio","Javier Antonelli","Maria Elsa De Leon","Lucas Rudy",
-    "Lucia Delgado","Marcos Ravassa","Laura Gonzalez","Carlos Barayoli",
-    "Silvia Peralta","Martin Barayoli","Simona","Celeste Barayoli",
-    "Cesar","Carlos Peralta","Griselda Barayoli","Natalia Peralta",
-    "John","Juan Peralta","Yesica","Laura Peralta",
-    "Norma Peralta","Marcelo","Guillermina Dematei","Guillermina Dematei (+1)",
-    "Matias Gomez","Matias Gomez (+1)","Carolina Odda","Carolina Odda (+1)",
-    "Maria Aprile","Rosario Elizalde","Mita Elizalde","Mita Elizalde (+1)",
-    "Fernanda Lara","Gustavo Anovelli","Gladys Girali","Walter Barrios",
-    "Andrea Martinez","Andrea Martinez (+1)","Claudia Patricia","Claudia Patricia (+1)",
-    "Miguel Gumarelli","Valentin Gumarelli","Nayla Gumarelli","Natalia Jara",
-    "Luciana Font","Luciana Font (+1)","Chuchu","Chuchu (+1)",
-    "Martin Chen","Martin Chen (+1)","Ana Pironio","Ana Pironio (+1)",
-    "Silvio Bascherand","Gabriela Bascherand","Luluca","Gabriela",
-    "Su","Su (+1)","Su (+1)","Su (+1)","Su (+1)","Su (+1)"
+    ["Emilia Fernandez", "Santiago Chen", "Kunxin Chen", "Belén Chen"],
+    ["Cintia Guiñazú", "Juan Pablo Collazo", "Mateo Collazo", "Morena Collazo"],
+    ["Titi Ortiz"],
+    ["Martin Fernandez", "Martina Fernandez", "Salvador Fernandez"],
+    ["Antonella Ercolano", "José Luis Ercolano", "Maria Ercolano", "Matias Ercolano", "Matias Ercolano (+1)"],
+    ["Sergio Ramos", "Agustina Ramos"],
+    ["Claudia Caputto"],
+    ["Agustina Bandoni", "Agustina Bandoni (+1)"],
+    ["Sofía Salvia"],
+    ["Hector Martinez"],
+    ["Laura Alfonsin"],
+    ["Roberto Desanso"],
+    ["Carmen Carbone"],
+    ["José Fragueiro", "José Fragueiro (+1)"],
+    ["Carlos Silveira", "Lorena Silveira"],
+    ["Carlos Scasso", "Nelba Lucero", "Victoria Scasso", "Eugenia Scasso", "Victoria Scasso (+1)", "Eugenia Scasso (+1)"],
+    ["Mario Paoletta"],
+    ["Patricia"],
+    ["Julio"],
+    ["Marcela Delvecchio"],
+    ["Javier Antonelli"],
+    ["Maria Elsa De Leon"],
+    ["Lucas Rudy"],
+    ["Lucia Delgado"],
+    ["Marcos Ravassa"],
+    ["Laura Gonzalez"],
+    ["Carlos Barayoli", "Silvia Peralta", "Martin Barayoli", "Simona", "Celeste Barayoli", "Cesar",
+     "Carlos Peralta", "Griselda Barayoli", "Natalia Peralta", "John", "Juan Peralta", "Yesica",
+     "Laura Peralta", "Norma Peralta", "Marcelo"],
+    ["Guillermina Dematei", "Guillermina Dematei (+1)"],
+    ["Matias Gomez", "Matias Gomez (+1)"],
+    ["Carolina Odda", "Carolina Odda (+1)"],
+    ["Maria Aprile"],
+    ["Rosario Elizalde", "Mita Elizalde", "Mita Elizalde (+1)"],
+    ["Fernanda Lara"],
+    ["Gustavo Anovelli"],
+    ["Gladys Girali"],
+    ["Walter Barrios"],
+    ["Andrea Martinez", "Andrea Martinez (+1)"],
+    ["Claudia Patricia", "Claudia Patricia (+1)"],
+    ["Miguel Gumarelli", "Valentin Gumarelli", "Nayla Gumarelli"],
+    ["Natalia Jara"],
+    ["Luciana Font", "Luciana Font (+1)"],
+    ["Chuchu", "Chuchu (+1)"],
+    ["Martin Chen", "Martin Chen (+1)"],
+    ["Ana Pironio", "Ana Pironio (+1)"],
+    ["Silvio Bascherand", "Gabriela Bascherand"],
+    ["Luluca"],
+    ["Gabriela"],
+    ["Su", "Su (+1)", "Su (+1)", "Su (+1)", "Su (+1)", "Su (+1)"],
   ];
 
   // ── COUNTDOWN ───────────────────────────────────────────
@@ -800,7 +828,13 @@
   function search(q) {
     if (!q || q.trim().length < 2) return [];
     const nq = normalize(q.trim());
-    return GUEST_LIST.filter(n => normalize(n).includes(nq));
+    const results = [];
+    for (const group of GUEST_LIST) {
+      if (group.some(name => normalize(name).includes(nq))) {
+        results.push(...group);
+      }
+    }
+    return results;
   }
 
   async function doConfirm(name, btn) {
