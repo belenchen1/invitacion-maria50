@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Emilia cumple 50 · 30 enero 2027</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --ivory:      #FAF8F4;
+      --dark:       #1C1917;
+      --gold:       #C49A45;
+      --gold-light: #E8D4A0;
+      --rose:       #C47B8E;
+      --muted:      #8C7B6E;
+      --border:     #E0D8CE;
+      --green:      #7BB38A;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--ivory);
+      color: var(--dark);
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 52px;
+      background: rgba(250,248,244,0.88);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid transparent;
+      transition: border-color .3s;
+    }
+    nav.scrolled { border-bottom-color: var(--border); }
+
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 400;
+      font-size: 17px;
+      letter-spacing: .12em;
+      color: var(--dark);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 40px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 10px;
+      letter-spacing: .24em;
+      text-transform: uppercase;
+      color: var(--dark);
+      text-decoration: none;
+      opacity: .6;
+      transition: opacity .2s;
+    }
+    .nav-links a:hover { opacity: 1; }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      padding: 80px 24px 100px;
+    }
+
+    .hero-doodle {
+      position: absolute;
+      width: 680px;
+      max-width: 90vw;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      opacity: .07;
+      pointer-events: none;
+      user-select: none;
+      object-fit: cover;
+    }
+
+    .hero-content { position: relative; z-index: 1; }
+
+    .hero-pre {
+      font-size: 10px;
+      letter-spacing: .38em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+
+    .hero-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 300;
+      font-size: clamp(84px, 15vw, 200px);
+      line-height: .88;
+      color: var(--dark);
+      letter-spacing: -.02em;
+    }
+
+    .hero-number {
+      display: block;
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 600;
+      font-size: clamp(44px, 9vw, 120px);
+      color: var(--gold);
+      letter-spacing: .06em;
+      margin-top: 6px;
+    }
+
+    .hero-sub {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: clamp(18px, 2.5vw, 28px);
+      color: var(--muted);
+      margin-top: 18px;
+      font-weight: 300;
+    }
+
+    .hero-date-line {
+      margin-top: 28px;
+      font-size: 11px;
+      letter-spacing: .3em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* countdown */
+    .countdown {
+      margin-top: 52px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 2px;
+    }
+
+    .countdown-unit {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 72px;
+    }
+
+    .countdown-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(44px, 7.5vw, 88px);
+      line-height: 1;
+      color: var(--dark);
+      letter-spacing: -.01em;
+    }
+
+    .countdown-label {
+      font-size: 9px;
+      letter-spacing: .26em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 7px;
+    }
+
+    .countdown-sep {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(36px, 5.5vw, 68px);
+      color: var(--border);
+      line-height: 1;
+      padding-top: 6px;
+      align-self: flex-start;
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 38px; left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 7px;
+      opacity: .35;
+    }
+    .scroll-hint span { font-size: 8px; letter-spacing: .28em; text-transform: uppercase; }
+    .scroll-line {
+      width: 1px; height: 44px;
+      background: var(--dark);
+      animation: s-pulse 2s ease-in-out infinite;
+    }
+    @keyframes s-pulse {
+      0%,100% { transform: scaleY(1); opacity: .5; }
+      50%      { transform: scaleY(1.15); opacity: 1; }
+    }
+
+    /* ── SHARED SECTION STYLES ── */
+    .inner {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 100px 52px;
+    }
+
+    .section-label {
+      font-size: 10px;
+      letter-spacing: .36em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 22px;
+    }
+
+    .gold-rule {
+      width: 48px; height: 1px;
+      background: var(--gold);
+      margin-bottom: 44px;
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(36px, 5vw, 68px);
+      line-height: 1.1;
+    }
+    .section-title em { font-style: italic; color: var(--gold); }
+
+    /* ── CUÁNDO ── */
+    #cuando .inner { text-align: center; }
+
+    .details-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+      margin-top: 64px;
+    }
+
+    .detail-item h3 {
+      font-size: 10px;
+      letter-spacing: .28em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+    .detail-item p {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(22px, 3vw, 32px);
+      font-weight: 400;
+      line-height: 1.25;
+    }
+
+    /* ── DÓNDE ── */
+    #donde { background: #F5F2ED; }
+    #donde .inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .donde-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(38px, 5vw, 62px);
+      font-weight: 300;
+      line-height: 1.05;
+      margin-bottom: 16px;
+    }
+
+    .donde-address {
+      font-size: 13px;
+      letter-spacing: .06em;
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 32px;
+      text-transform: uppercase;
+    }
+
+    .map-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 10px;
+      letter-spacing: .24em;
+      text-transform: uppercase;
+      color: var(--dark);
+      text-decoration: none;
+      border-bottom: 1px solid var(--gold);
+      padding-bottom: 3px;
+      transition: color .2s;
+    }
+    .map-link:hover { color: var(--gold); }
+
+    .doodle-img {
+      width: 100%;
+      max-width: 420px;
+      border-radius: 2px;
+      object-fit: cover;
+      aspect-ratio: 4/5;
+    }
+
+    /* ── LOOK ── */
+    #look {
+      background: var(--dark);
+      color: var(--ivory);
+    }
+    #look .inner { text-align: center; }
+    #look .section-label { color: rgba(232,212,160,.6); }
+    #look .gold-rule { margin-left: auto; margin-right: auto; opacity: .45; }
+
+    .look-big {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 300;
+      font-size: clamp(64px, 12vw, 160px);
+      color: var(--gold);
+      line-height: .88;
+      margin: 28px 0 32px;
+    }
+
+    .look-sub {
+      font-size: 13px;
+      letter-spacing: .1em;
+      color: rgba(250,248,244,.45);
+      line-height: 2;
+      max-width: 380px;
+      margin: 0 auto;
+    }
+
+    /* ── RSVP ── */
+    #rsvp .inner { text-align: center; }
+
+    .rsvp-form {
+      margin: 56px auto 0;
+      max-width: 540px;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 18px 24px;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 1px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 300;
+      color: var(--dark);
+      outline: none;
+      transition: border-color .25s;
+      text-align: center;
+      letter-spacing: .04em;
+    }
+    .search-input::placeholder { color: var(--muted); opacity: .55; }
+    .search-input:focus { border-color: var(--gold); }
+
+    .results-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .guest-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 16px 20px;
+      border: 1px solid var(--border);
+      background: #fff;
+      border-radius: 1px;
+      transition: border-color .2s, box-shadow .2s;
+      text-align: left;
+    }
+    .guest-card:hover          { border-color: var(--gold); box-shadow: 0 2px 16px rgba(196,154,69,.09); }
+    .guest-card.is-confirmed   { border-color: var(--green); background: #f7fbf8; }
+
+    .guest-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 21px;
+      font-weight: 400;
+      flex: 1;
+    }
+
+    .confirm-btn {
+      flex-shrink: 0;
+      font-family: 'Jost', sans-serif;
+      font-size: 9px;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      background: var(--dark);
+      color: var(--ivory);
+      border: none;
+      padding: 11px 20px;
+      cursor: pointer;
+      border-radius: 1px;
+      transition: background .2s;
+      white-space: nowrap;
+    }
+    .confirm-btn:hover:not(:disabled) { background: var(--gold); }
+    .confirm-btn.is-confirmed         { background: var(--green); cursor: default; }
+    .confirm-btn:disabled             { opacity: .75; cursor: default; }
+
+    .no-results {
+      padding: 28px 16px;
+      color: var(--muted);
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 20px;
+    }
+
+    .rsvp-hint {
+      margin-top: 20px;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 64px 24px 96px;
+    }
+    .footer-name {
+      display: block;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 36px;
+      font-weight: 300;
+      margin-bottom: 12px;
+    }
+    footer p {
+      font-size: 11px;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ── BOTTOM PROGRESS BAR ── */
+    .bottom-bar {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      z-index: 90;
+      display: flex;
+      justify-content: center;
+      background: rgba(250,248,244,.94);
+      backdrop-filter: blur(10px);
+      border-top: 1px solid var(--border);
+      padding: 14px 24px;
+      gap: 0;
+    }
+
+    .prog-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      flex: 1;
+      max-width: 140px;
+    }
+
+    .prog-label {
+      font-size: 8px;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--border);
+      transition: color .3s;
+    }
+    .prog-section.active .prog-label { color: var(--dark); }
+
+    .prog-track {
+      width: 100%; height: 1px;
+      background: var(--border);
+      position: relative;
+    }
+    .prog-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--border);
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+      transition: background .3s;
+    }
+    .prog-section.active .prog-dot { background: var(--dark); }
+
+    /* ── FADE IN ── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity .9s ease, transform .9s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 16px 24px; }
+      .nav-links { gap: 22px; }
+      .nav-links a { font-size: 9px; }
+
+      .inner { padding: 80px 24px; }
+
+      #donde .inner {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+      .doodle-img { max-width: 100%; aspect-ratio: 16/10; }
+
+      .details-grid { grid-template-columns: 1fr; gap: 32px; }
+
+      .countdown-unit { min-width: 58px; }
+
+      .bottom-bar { padding: 12px 12px; }
+      .prog-section { max-width: 70px; }
+    }
+
+    @media (max-width: 480px) {
+      .nav-links { display: none; }
+      .countdown-sep { font-size: 28px; }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- ════════════════════════ NAV ════════════════════════ -->
+<nav id="navbar">
+  <a href="#hero" class="nav-logo">Emilia · 50</a>
+  <ul class="nav-links">
+    <li><a href="#cuando">Cuándo</a></li>
+    <li><a href="#donde">Dónde</a></li>
+    <li><a href="#look">Look</a></li>
+    <li><a href="#rsvp">RSVP</a></li>
+  </ul>
+</nav>
+
+
+<!-- ════════════════════════ HERO ════════════════════════ -->
+<section id="hero">
+  <img src="img/party-table-doodle.jpg" alt="" class="hero-doodle" aria-hidden="true">
+
+  <div class="hero-content">
+    <p class="hero-pre fade-in">Una noche para celebrar</p>
+    <h1 class="hero-name fade-in">Emilia</h1>
+    <span class="hero-number fade-in">50</span>
+    <p class="hero-sub fade-in">cumple cincuenta</p>
+    <p class="hero-date-line fade-in">30 · enero · 2027</p>
+
+    <div class="countdown fade-in" id="countdown">
+      <div class="countdown-unit">
+        <span class="countdown-number" id="cd-days">—</span>
+        <span class="countdown-label">días</span>
+      </div>
+      <span class="countdown-sep">:</span>
+      <div class="countdown-unit">
+        <span class="countdown-number" id="cd-hours">—</span>
+        <span class="countdown-label">horas</span>
+      </div>
+      <span class="countdown-sep">:</span>
+      <div class="countdown-unit">
+        <span class="countdown-number" id="cd-mins">—</span>
+        <span class="countdown-label">min</span>
+      </div>
+      <span class="countdown-sep">:</span>
+      <div class="countdown-unit">
+        <span class="countdown-number" id="cd-secs">—</span>
+        <span class="countdown-label">seg</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    <span>scroll</span>
+  </div>
+</section>
+
+
+<!-- ════════════════════════ CUÁNDO ════════════════════════ -->
+<section id="cuando">
+  <div class="inner">
+    <p class="section-label fade-in">La fecha</p>
+    <div class="gold-rule fade-in"></div>
+    <h2 class="section-title fade-in">
+      Sábado 30 de <em>enero</em><br>del 2027
+    </h2>
+
+    <div class="details-grid">
+      <div class="detail-item fade-in">
+        <h3>Día</h3>
+        <p>Sábado</p>
+      </div>
+      <div class="detail-item fade-in">
+        <h3>Fecha</h3>
+        <p>30 · 01 · 2027</p>
+      </div>
+      <div class="detail-item fade-in">
+        <h3>Hora</h3>
+        <!-- Cambiar hora si es necesario -->
+        <p>21:00 hs</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════ DÓNDE ════════════════════════ -->
+<section id="donde">
+  <div class="inner">
+    <div class="fade-in">
+      <p class="section-label">El lugar</p>
+      <div class="gold-rule"></div>
+      <h2 class="donde-title">Club del<br>Progreso</h2>
+      <p class="donde-address">
+        Calle 25 N° 523<br>
+        Mercedes, Pcia. de Buenos Aires
+      </p>
+      <a
+        href="https://maps.app.goo.gl/FsRU5Bn8bcqiKrv47"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="map-link"
+      >
+        Ver en el mapa
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M7 17L17 7M17 7H7M17 7v10"/>
+        </svg>
+      </a>
+    </div>
+
+    <img
+      src="img/party-table-doodle-2.jpg"
+      alt="Decoración de fiesta"
+      class="doodle-img fade-in"
+      loading="lazy"
+    >
+  </div>
+</section>
+
+
+<!-- ════════════════════════ LOOK ════════════════════════ -->
+<section id="look">
+  <div class="inner">
+    <p class="section-label fade-in">Código de vestimenta</p>
+    <div class="gold-rule fade-in"></div>
+    <p class="look-big fade-in">Sin<br>reglas</p>
+    <p class="look-sub fade-in">
+      Venite como más cómodo te sientas.<br>
+      Lo que importa es que estés ahí.
+    </p>
+  </div>
+</section>
+
+
+<!-- ════════════════════════ RSVP ════════════════════════ -->
+<section id="rsvp">
+  <div class="inner">
+    <p class="section-label fade-in">Confirmación de asistencia</p>
+    <div class="gold-rule fade-in" style="margin-left:auto;margin-right:auto;"></div>
+    <h2 class="section-title fade-in">¿Venís a<br><em>festejar</em>?</h2>
+
+    <div class="rsvp-form fade-in">
+      <input
+        type="search"
+        id="search-input"
+        class="search-input"
+        placeholder="Buscá tu nombre..."
+        autocomplete="off"
+        autocorrect="off"
+        autocapitalize="words"
+        spellcheck="false"
+        enterkeyhint="search"
+        aria-label="Buscar nombre en la lista de invitados"
+      >
+      <div class="results-list" id="results-list" role="list"></div>
+      <p class="rsvp-hint" id="rsvp-hint">
+        Escribí tu nombre o apellido para encontrarte en la lista de invitados.
+      </p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════ FOOTER ════════════════════════ -->
+<footer>
+  <span class="footer-name">Emilia</span>
+  <p>30 · enero · 2027 &nbsp;·&nbsp; Mercedes, Buenos Aires</p>
+</footer>
+
+
+<!-- ════════════════════════ BOTTOM BAR ════════════════════════ -->
+<div class="bottom-bar" role="navigation" aria-label="Progreso de la página">
+  <div class="prog-section" data-target="hero">
+    <span class="prog-label">Inicio</span>
+    <div class="prog-track"><div class="prog-dot"></div></div>
+  </div>
+  <div class="prog-section" data-target="cuando">
+    <span class="prog-label">Cuándo</span>
+    <div class="prog-track"><div class="prog-dot"></div></div>
+  </div>
+  <div class="prog-section" data-target="donde">
+    <span class="prog-label">Dónde</span>
+    <div class="prog-track"><div class="prog-dot"></div></div>
+  </div>
+  <div class="prog-section" data-target="look">
+    <span class="prog-label">Look</span>
+    <div class="prog-track"><div class="prog-dot"></div></div>
+  </div>
+  <div class="prog-section" data-target="rsvp">
+    <span class="prog-label">RSVP</span>
+    <div class="prog-track"><div class="prog-dot"></div></div>
+  </div>
+</div>
+
+
+<script>
+  // ── CONFIG ──────────────────────────────────────────────
+  // Después de configurar el Google Apps Script, pegar la URL aquí.
+  // Ver instrucciones en google-apps-script/Code.gs
+  const APPS_SCRIPT_URL = 'REPLACE_WITH_YOUR_APPS_SCRIPT_URL';
+
+  // Hora del evento en Buenos Aires (UTC-3)
+  const EVENT_DATE = new Date('2027-01-30T21:00:00-03:00');
+
+  // ── LISTA DE INVITADOS ───────────────────────────────────
+  const GUEST_LIST = [
+    "Emilia Fernandez","Santiago Chen","Kunxin Chen","Belén Chen",
+    "Cintia Guiñazú","Juan Pablo Collazo","Mateo Collazo","Morena Collazo",
+    "Titi Ortiz","Martin Fernandez","Martina Fernandez","Salvador Fernandez",
+    "Antonella Ercolano","José Luis Ercolano","Maria Ercolano","Matias Ercolano",
+    "Matias Ercolano (+1)","Sergio Ramos","Agustina Ramos","Claudia Caputto",
+    "Agustina Bandoni","Agustina Bandoni (+1)","Sofía Salvia","Hector Martinez",
+    "Laura Alfonsin","Roberto Desanso","Carmen Carbone","José Fragueiro",
+    "José Fragueiro (+1)","Carlos Silveira","Lorena Silveira","Carlos Scasso",
+    "Nelba Lucero","Victoria Scasso","Eugenia Scasso","Victoria Scasso (+1)",
+    "Eugenia Scasso (+1)","Mario Paoletta","Patricia","Julio",
+    "Marcela Delvecchio","Javier Antonelli","Maria Elsa De Leon","Lucas Rudy",
+    "Lucia Delgado","Marcos Ravassa","Laura Gonzalez","Carlos Barayoli",
+    "Silvia Peralta","Martin Barayoli","Simona","Celeste Barayoli",
+    "Cesar","Carlos Peralta","Griselda Barayoli","Natalia Peralta",
+    "John","Juan Peralta","Yesica","Laura Peralta",
+    "Norma Peralta","Marcelo","Guillermina Dematei","Guillermina Dematei (+1)",
+    "Matias Gomez","Matias Gomez (+1)","Carolina Odda","Carolina Odda (+1)",
+    "Maria Aprile","Rosario Elizalde","Mita Elizalde","Mita Elizalde (+1)",
+    "Fernanda Lara","Gustavo Anovelli","Gladys Girali","Walter Barrios",
+    "Andrea Martinez","Andrea Martinez (+1)","Claudia Patricia","Claudia Patricia (+1)",
+    "Miguel Gumarelli","Valentin Gumarelli","Nayla Gumarelli","Natalia Jara",
+    "Luciana Font","Luciana Font (+1)","Chuchu","Chuchu (+1)",
+    "Martin Chen","Martin Chen (+1)","Ana Pironio","Ana Pironio (+1)",
+    "Silvio Bascherand","Gabriela Bascherand","Luluca","Gabriela",
+    "Su","Su (+1)","Su (+1)","Su (+1)","Su (+1)","Su (+1)"
+  ];
+
+  // ── COUNTDOWN ───────────────────────────────────────────
+  function pad(n) { return String(n).padStart(2, '0'); }
+
+  function tick() {
+    const diff = EVENT_DATE - Date.now();
+    if (diff <= 0) {
+      document.getElementById('countdown').innerHTML =
+        '<p style="font-family:\'Cormorant Garamond\',serif;font-style:italic;font-size:32px;color:var(--gold)">¡Es hoy! ✨</p>';
+      return;
+    }
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+    document.getElementById('cd-days').textContent  = pad(d);
+    document.getElementById('cd-hours').textContent = pad(h);
+    document.getElementById('cd-mins').textContent  = pad(m);
+    document.getElementById('cd-secs').textContent  = pad(s);
+  }
+  tick();
+  setInterval(tick, 1000);
+
+  // ── RSVP ────────────────────────────────────────────────
+  // Persistencia local para no requerir confirmar dos veces
+  const confirmed = new Set(JSON.parse(localStorage.getItem('rsvp_confirmed') || '[]'));
+
+  function normalize(str) {
+    return str.toLowerCase()
+      .normalize('NFD').replace(/[̀-ͯ]/g, '')
+      .replace(/[^a-z0-9 ]/g, '');
+  }
+
+  function search(q) {
+    if (!q || q.trim().length < 2) return [];
+    const nq = normalize(q.trim());
+    return GUEST_LIST.filter(n => normalize(n).includes(nq));
+  }
+
+  async function doConfirm(name, btn) {
+    btn.disabled = true;
+    btn.textContent = 'Confirmando...';
+
+    confirmed.add(name);
+    localStorage.setItem('rsvp_confirmed', JSON.stringify([...confirmed]));
+
+    if (APPS_SCRIPT_URL && APPS_SCRIPT_URL !== 'REPLACE_WITH_YOUR_APPS_SCRIPT_URL') {
+      try {
+        const url = APPS_SCRIPT_URL + '?action=confirm&name=' + encodeURIComponent(name);
+        await fetch(url, { redirect: 'follow', mode: 'no-cors' });
+      } catch (e) {
+        // guardado localmente de todas formas
+      }
+    }
+
+    btn.textContent = '¡Confirmado! ✓';
+    btn.classList.add('is-confirmed');
+    btn.closest('.guest-card').classList.add('is-confirmed');
+  }
+
+  function render(names) {
+    const list = document.getElementById('results-list');
+    const hint = document.getElementById('rsvp-hint');
+    hint.style.display = 'none';
+
+    if (!names.length) {
+      list.innerHTML = '<div class="no-results">No encontramos ese nombre en la lista</div>';
+      return;
+    }
+
+    list.innerHTML = names.map(name => {
+      const ok = confirmed.has(name);
+      const safeName = name.replace(/'/g, "\\'");
+      return `
+        <div class="guest-card${ok ? ' is-confirmed' : ''}" role="listitem">
+          <span class="guest-name">${name}</span>
+          <button
+            class="confirm-btn${ok ? ' is-confirmed' : ''}"
+            ${ok ? 'disabled' : ''}
+            onclick="doConfirm('${safeName}', this)"
+          >${ok ? '¡Confirmado! ✓' : 'Confirmar'}</button>
+        </div>`;
+    }).join('');
+  }
+
+  let debounce;
+  document.getElementById('search-input').addEventListener('input', function () {
+    clearTimeout(debounce);
+    const v = this.value;
+    if (!v.trim()) {
+      document.getElementById('results-list').innerHTML = '';
+      document.getElementById('rsvp-hint').style.display = '';
+      return;
+    }
+    debounce = setTimeout(() => render(search(v)), 180);
+  });
+
+  // ── SCROLL FX ───────────────────────────────────────────
+  const fadeObs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-in').forEach(el => fadeObs.observe(el));
+
+  // bottom progress bar
+  const progObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      document.querySelectorAll('.prog-section').forEach(ps => {
+        ps.classList.toggle('active', ps.dataset.target === e.target.id);
+      });
+    });
+  }, { threshold: 0.4 });
+  ['hero','cuando','donde','look','rsvp'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) progObs.observe(el);
+  });
+
+  // navbar border on scroll
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').classList.toggle('scrolled', scrollY > 60);
+  }, { passive: true });
+</script>
+
+</body>
+</html>
