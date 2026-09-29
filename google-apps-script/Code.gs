@@ -119,12 +119,13 @@ function confirmGuest(name) {
 
 /**
  * Helper: obtiene la hoja de invitados.
+ * Busca por nombre; si no la encuentra usa la primera hoja disponible.
  */
 function getSheet() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var ws = ss.getSheetByName(SHEET_NAME);
   if (!ws) {
-    throw new Error('No se encontró la hoja "' + SHEET_NAME + '"');
+    ws = ss.getSheets()[0]; // fallback a la primera hoja
   }
   return ws;
 }

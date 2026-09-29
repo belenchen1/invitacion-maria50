@@ -833,12 +833,9 @@
     localStorage.setItem('rsvp_confirmed', JSON.stringify([...confirmed]));
 
     if (APPS_SCRIPT_URL && APPS_SCRIPT_URL !== 'REPLACE_WITH_YOUR_APPS_SCRIPT_URL') {
-      try {
-        const url = APPS_SCRIPT_URL + '?action=confirm&name=' + encodeURIComponent(name);
-        await fetch(url, { redirect: 'follow', mode: 'no-cors' });
-      } catch (e) {
-        // guardado localmente de todas formas
-      }
+      // Usar Image() evita problemas de CORS/redirect con Apps Script
+      const url = APPS_SCRIPT_URL + '?action=confirm&name=' + encodeURIComponent(name);
+      new Image().src = url;
     }
 
     btn.textContent = '¡Confirmado! ✓';
