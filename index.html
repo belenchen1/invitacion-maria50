@@ -430,7 +430,13 @@
       letter-spacing: 0;
     }
     .decline-btn:hover:not(:disabled)  { border-color: #C47B8E; color: #C47B8E; }
-    .decline-btn.is-declined           { background: #fdf0f2; border-color: #C47B8E; color: #C47B8E; cursor: default; }
+    .decline-btn.is-declined           { background: #C47B8E; border-color: #C47B8E; color: #fff; cursor: default; }
+
+    .guest-card.is-declined .confirm-btn:not(.is-confirmed) {
+      background: #d6d0c8;
+      color: rgba(28,25,23,.4);
+      opacity: .5;
+    }
 
     .guest-card:disabled *,
     .confirm-btn:disabled,
