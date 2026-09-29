@@ -56,7 +56,10 @@ function doGet(e) {
   try {
     if (action === 'confirm') {
       if (!params.name) throw new Error('Falta el parámetro "name"');
-      result = confirmGuest(params.name);
+      result = setGuestStatus(params.name, 'Si');
+    } else if (action === 'decline') {
+      if (!params.name) throw new Error('Falta el parámetro "name"');
+      result = setGuestStatus(params.name, 'No');
     } else {
       result = listGuests();
     }
@@ -88,10 +91,10 @@ function listGuests() {
 }
 
 /**
- * Marca a un invitado como confirmado.
- * Si el nombre no se encuentra, lo registra igual al final de la lista.
+ * Actualiza el estado de un invitado ('Si' o 'No').
+ * Si el nombre no se encuentra, lo agrega al final.
  */
-function confirmGuest(name) {
+function setGuestStatus(name, status) {
   var ws = getSheet();
   var data = ws.getDataRange().getValues();
   var now = Utilities.formatDate(
@@ -100,21 +103,19 @@ function confirmGuest(name) {
     'dd/MM/yyyy HH:mm'
   );
 
-  // Buscar nombre exacto primero
   for (var i = 0; i < data.length; i++) {
     if (String(data[i][0] || '').trim() === name.trim()) {
-      ws.getRange(i + 1, 2).setValue('Si');
+      ws.getRange(i + 1, 2).setValue(status);
       ws.getRange(i + 1, 3).setValue(now);
-      return { success: true, name: name, row: i + 1 };
+      return { success: true, name: name, status: status, row: i + 1 };
     }
   }
 
-  // Si no se encontró (caso improbable desde el buscador), igual se registra
   var lastRow = ws.getLastRow() + 1;
   ws.getRange(lastRow, 1).setValue(name.trim());
-  ws.getRange(lastRow, 2).setValue('Si');
+  ws.getRange(lastRow, 2).setValue(status);
   ws.getRange(lastRow, 3).setValue(now);
-  return { success: true, name: name, row: lastRow, note: 'nuevo invitado agregado' };
+  return { success: true, name: name, status: status, row: lastRow, note: 'agregado' };
 }
 
 /**
